@@ -10,14 +10,14 @@ export class HomePage {
   constructor() { }
 
   tela: string = '';
-  b: string = '';
+  conta: string = '';
   temp: any;
-  numeros: any = [];
   resultado = 0;
 
-  soma(numeros: any) {
+  soma(numeros: any[]) {
+    console.log('-------- soma --------');
     numeros.forEach((n: any) => {
-      this.resultado += n;
+      this.resultado += parseInt(n);
     });
   }
 
@@ -49,70 +49,50 @@ export class HomePage {
 
   }
 
-  selOperacao(op: any) {
-    
+  seleciona2(op: any) {
+
     if (op == 'limpa') {
-      this.tela = '';
-      this.numeros = [];
       this.temp = null;
-      this.b = '';
+      this.tela = '';
+      this.conta = '';
+      this.resultado = 0;
+    }
+
+    else if (op == 'calc') {
+      const partes: string[] = this.conta.split('+');
+      this.soma(partes);
+      this.tela = this.resultado.toString();
+      this.conta = this.resultado.toString();
+      this.resultado = 0;
+    }
+
+    else {
+      this.tela += op;
+      this.conta += op;
+      console.log("adicionado: "+op);
+    }
+
+  }
+
+  seleciona(op: any) {
+    if (op == 'calc' && this.tela) {
+      try {
+        this.tela = eval(this.tela);
+      } catch (error) {
+        console.log("Erro: "+error);
+      }
     }
     else {
-      this.b = op;
       this.tela += op;
     }
-
-    console.log(op);
   }
 
-  selNumero(num: any) {
-    this.tela += num;
-    this.numeros.push(num);
-
-    if(this.b == '+'){
-      this.soma(this.numeros);
-      this.numeros.shift();
-      this.numeros.shift();
-      this.temp = this.resultado;
-      this.numeros.unshift(this.temp);
-      this.resultado = 0;
-      this.b = '';
-    }
-
-    if(this.b == '-'){
-      this.sub(this.numeros);
-      this.numeros.shift();
-      this.numeros.shift();
-      this.temp = this.resultado;
-      this.numeros.unshift(this.temp);
-      this.resultado = 0;
-      this.b = '';
-    }
-
-    if(this.b == '*'){
-      this.mult(this.numeros);
-      this.numeros.shift();
-      this.numeros.shift();
-      this.temp = this.resultado;
-      this.numeros.unshift(this.temp);
-      this.resultado = 0;
-      this.b = '';
-    }
-
-    if(this.b == '/'){
-      this.divi(this.numeros);
-      this.numeros.shift();
-      this.numeros.shift();
-      this.temp = this.resultado;
-      this.numeros.unshift(this.temp);
-      this.resultado = 0;
-      this.b = '';
-    }
-
-    console.log("num: "+num)
-    console.log("numeros: "+this.numeros)
-    console.log("temp: "+ this.temp)
-    console.log("resultado: "+ this.resultado)
-    console.log("b: "+ this.b)
+  limpar(){
+    this.tela = '';
   }
+
+  apagar(){
+    this.tela = this.tela.toString().substring(0, this.tela.toString().length-1);
+  }
+
 }
