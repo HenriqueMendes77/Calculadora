@@ -1,20 +1,34 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Calculadora
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="div-principal">
+    <div class="visor">
+      <div [innerHTML]="tela"></div>
+      <div [innerHTML]="temp" class="resultado"></div>
+    </div>
+    <div class="teclado">
+      <div (click)="selNumero(1)" class="btn">1</div>
+      <div (click)="selNumero(2)" class="btn">2</div>
+      <div (click)="selNumero(3)" class="btn">3</div>
+      <div (click)="selOperacao('+')" class="btn diferente">+</div>
+      <div (click)="selNumero(4)" class="btn">4</div>
+      <div (click)="selNumero(5)" class="btn">5</div>
+      <div (click)="selNumero(6)" class="btn">6</div>
+      <div (click)="selOperacao('-')" class="btn diferente">-</div>
+      <div (click)="selNumero(7)" class="btn">7</div>
+      <div (click)="selNumero(8)" class="btn">8</div>
+      <div (click)="selNumero(9)" class="btn">9</div>
+      <div (click)="selOperacao('*')" class="btn diferente">x</div>
+      <div (click)="selOperacao('limpa')" class="btn diferente">C</div>
+      <div (click)="selNumero(0)" class="btn">0</div>
+      <div (click)="selOperacao('calc')" class="btn diferente">=</div>
+      <div (click)="selOperacao('/')" class="btn diferente">/</div>
+    </div>
   </div>
 </ion-content>
