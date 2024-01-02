@@ -9,8 +9,8 @@
 <ion-content [fullscreen]="true">
   <div class="div-principal">
     <div class="visor">
-      <div [innerHTML]="tela"></div>
-      <div [innerHTML]="temp" class="resultado"></div>
+      <div [innerHTML]="visor" style="overflow-y: auto;"></div>
+      <!-- <div [innerHTML]="temp" class="resultado"></div> -->
     </div>
     <div class="teclado">
       <button (click)="limpar()" class="btn diferente">C</button>

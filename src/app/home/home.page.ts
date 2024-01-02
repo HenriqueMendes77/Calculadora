@@ -7,92 +7,54 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage {
 
+  conta: string = '';
+  visor: string = '';
+  // temp: string = '';
+
   constructor() { }
 
-  tela: string = '';
-  conta: string = '';
-  temp: any;
-  resultado = 0;
-
-  soma(numeros: any[]) {
-    console.log('-------- soma --------');
-    numeros.forEach((n: any) => {
-      this.resultado += parseInt(n);
-    });
-  }
-
-  sub(numeros: any) {
-    this.resultado = numeros[0];
-    numeros.shift();
-    numeros.forEach((n: any) => {
-      this.resultado -= n;
-    });
-  }
-
-  mult(numeros: any) {
-    this.resultado = numeros[0];
-    numeros.shift();
-    numeros.forEach((n: any) => {
-      this.resultado *= n;
-    });
-  }
-
-  divi(numeros: any) {
-    this.resultado = numeros[0];
-    numeros.shift();
-    numeros.forEach((n: any) => {
-      this.resultado /= n;
-    });
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  seleciona2(op: any) {
-
-    if (op == 'limpa') {
-      this.temp = null;
-      this.tela = '';
-      this.conta = '';
-      this.resultado = 0;
-    }
-
-    else if (op == 'calc') {
-      const partes: string[] = this.conta.split('+');
-      this.soma(partes);
-      this.tela = this.resultado.toString();
-      this.conta = this.resultado.toString();
-      this.resultado = 0;
-    }
-
-    else {
-      this.tela += op;
-      this.conta += op;
-      console.log("adicionado: "+op);
-    }
-
-  }
+  ngOnInit(): void { }
 
   seleciona(op: any) {
-    if (op == 'calc' && this.tela) {
+    if (op == 'calc' && this.conta) {
       try {
-        this.tela = eval(this.tela);
+        this.conta = eval(this.conta).toString();
+        this.visor = eval(this.conta).toString();
+        // this.temp = '';
       } catch (error) {
-        console.log("Erro: "+error);
+        console.log("Erro: " + error);
       }
     }
     else {
-      this.tela += op;
+      this.conta += op;
+
+      op = op === '*' ? '&times' : op;
+      op = op === '/' ? '&divide' : op;
+      this.visor += op;
+      
+      // this.temp = eval(this.conta);
     }
   }
 
-  limpar(){
-    this.tela = '';
+  limpar() {
+    this.visor = '';
+    this.conta = '';
+    // this.temp = '';
   }
 
-  apagar(){
-    this.tela = this.tela.toString().substring(0, this.tela.toString().length-1);
+  apagar() {
+    this.conta = this.conta.toString().substring(0, this.conta.toString().length - 1);
+
+    this.visor = this.visor.replaceAll('&times', '*');
+    this.visor = this.visor.replaceAll('&divide', '/');
+
+    this.visor = this.visor.toString().substring(0, this.visor.toString().length - 1);
+
+    this.visor = this.visor.replaceAll('*', '&times');
+    this.visor = this.visor.replaceAll('/', '&divide');
+
+    // this.temp = eval(this.conta.toString().substring(0, this.conta.toString().length - 1));
+    // this.temp = this.conta === '' ? '' : this.temp;
   }
 
 }
