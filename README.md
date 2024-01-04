@@ -1,2 +1,2 @@
 # calculadora
-### versão 1.6
+### versão 1.7
