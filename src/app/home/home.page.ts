@@ -17,7 +17,11 @@ export class HomePage {
   ngOnInit(): void { }
 
   seleciona(op: any) {
-    if (op == 'calc' && this.conta) {
+    if (op == 'calc' && this.conta !== '') {
+      if (this.conta === '7+4+2005') {
+        let efeito = document.querySelector('#visor') as HTMLElement;
+        efeito.classList.add('rainbow');
+      }
       try {
         this.conta = eval(this.conta).toString();
         this.visor = eval(this.conta).toString();
@@ -26,12 +30,13 @@ export class HomePage {
         console.log("Erro: " + error);
       }
     }
-    else {
+    else if (op != 'calc') {
       this.conta += op;
+
       op = op === '*' ? '&times' : op;
       op = op === '/' ? '&divide' : op;
       this.visor += op;
-      if (this.conta[this.conta.length-1] != '+' && this.conta[this.conta.length-1] != '-' && this.conta[this.conta.length-1] != '*' && this.conta[this.conta.length-1] != '/') {
+      if (this.conta[this.conta.length - 1] != '+' && this.conta[this.conta.length - 1] != '-' && this.conta[this.conta.length - 1] != '*' && this.conta[this.conta.length - 1] != '/') {
         this.temp = eval(this.conta).toString();
       }
     }
@@ -54,4 +59,13 @@ export class HomePage {
     this.temp = this.conta === '' ? '' : this.temp;
   }
 
+  teclado() {
+    let modal = document.querySelector('.box-modal') as HTMLElement;
+    modal.style.display = 'flex';
+  }
+
+  fecharModal() {
+    let modal = document.querySelector('.box-modal') as HTMLElement;
+    modal.style.display = 'none';
+  }
 }
