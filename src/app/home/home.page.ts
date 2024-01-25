@@ -12,6 +12,8 @@ export class HomePage {
   temp: string = '';
   operadores: string[] = ['+', '-', '*', '/'];
 
+  simbolos: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void { }
@@ -60,8 +62,7 @@ export class HomePage {
   }
 
   teclado() {
-    let modal = document.querySelector('.box-modal') as HTMLElement;
-    modal.style.display = 'flex';
+    this.simbolos = this.simbolos === false ? true : false;
   }
 
   fecharModal() {
