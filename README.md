@@ -3,7 +3,7 @@
 
 Este é um app simples de calculadora feito com Ionic, para realizar operações básicas como soma, subtração, multiplicação e divisão. 
 
-![Imagem da Calculadora](../Calculadora/src/assets/tela/print-2.png)
+![Imagem da Calculadora](src/assets/tela/print-2.png)
 
 
 ---
