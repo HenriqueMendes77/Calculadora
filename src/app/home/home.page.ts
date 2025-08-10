@@ -5,68 +5,93 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-  conta: string = '';
+  temp: number = 0;
   visor: string = '';
-  temp: string = '';
+  conta: string = '';
   operadores: string[] = ['+', '-', '*', '/'];
-
-  simbolos: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void { }
 
-  seleciona(op: any) {
-    if (op == 'calc' && this.conta !== '') {
-      if (this.conta === '7+4+2005') {
-        let efeito = document.querySelector('#visor') as HTMLElement;
-        efeito.classList.add('rainbow');
-      }
-      try {
-        this.conta = eval(this.conta).toString();
-        this.visor = eval(this.conta).toString();
-        this.temp = '';
-      } catch (error) {
-        console.log("Erro: " + error);
-      }
-    }
-    else if (op != 'calc') {
-      this.conta += op;
+  seleciona(opcao: string) {
 
-      op = op === '*' ? '&times' : op;
-      op = op === '/' ? '&divide' : op;
-      this.visor += op;
-      if (this.conta[this.conta.length - 1] != '+' && this.conta[this.conta.length - 1] != '-' && this.conta[this.conta.length - 1] != '*' && this.conta[this.conta.length - 1] != '/') {
-        this.temp = eval(this.conta).toString();
+    if (opcao === 'calc') {
+      if (!this.operadores.includes(this.conta.slice(-1)) && this.contaParenteses()) {
+        this.conta = this.conta === '' ? '0' : eval(this.conta).toString();
+        this.visor = this.conta;
+        this.temp = 0;
       }
+    } else {
+      if (this.operadores.includes(this.conta.slice(-1)) && this.operadores.includes(opcao)) {
+        this.conta = this.conta.slice(0, -1);
+      }
+
+      if (opcao === ')') {
+        let abre = (this.conta.match(/\(/g) || []).length;
+        let fecha = (this.conta.match(/\)/g) || []).length;
+
+        if (abre <= fecha) {
+          opcao = '(';
+        }
+
+        if (this.conta.slice(-1) === '(') {
+          this.conta += '0';
+        }
+      }
+
+      if (opcao === '(' && /[0-9)]/.test(this.conta.slice(-1))) {
+        this.conta += '*';
+      }
+
+      if (this.conta === '0' && opcao === '0') return
+
+      if (this.conta === '0' && /[1-9]/.test(opcao)) {
+        this.conta = opcao;
+      } else {
+        this.conta += opcao;
+      }
+
+      this.calcular();
     }
   }
 
   limpar() {
-    this.visor = '';
     this.conta = '';
-    this.temp = '';
+    this.visor = '';
+    this.temp = 0;
+  }
+
+  contaParenteses() {
+    let contador = 0;
+    for (const c of this.conta) {
+      if (c === '(') contador++;
+      else if (c === ')') contador--;
+    }
+    return contador === 0;
+  }
+
+  calcular() {
+    if (!this.operadores.includes(this.conta.slice(-1)) && this.contaParenteses()) {
+      this.temp = this.conta === '' ? 0 : eval(this.conta);
+    }
+
+    this.visor = this.conta.replaceAll('*', '×').replaceAll('/', '÷');
+    this.status();
   }
 
   apagar() {
-    this.conta = this.conta.toString().substring(0, this.conta.toString().length - 1);
-    this.visor = this.visor.replaceAll('&times', '*');
-    this.visor = this.visor.replaceAll('&divide', '/');
-    this.visor = this.visor.toString().substring(0, this.visor.toString().length - 1);
-    this.visor = this.visor.replaceAll('*', '&times');
-    this.visor = this.visor.replaceAll('/', '&divide');
-    this.temp = eval(this.conta.toString().substring(0, this.conta.toString().length - 1));
-    this.temp = this.conta === '' ? '' : this.temp;
+    if (this.visor.length === 0) return;
+    this.conta = this.conta.slice(0, -1);
+    this.calcular();
   }
 
-  teclado() {
-    this.simbolos = this.simbolos === false ? true : false;
-  }
-
-  fecharModal() {
-    let modal = document.querySelector('.box-modal') as HTMLElement;
-    modal.style.display = 'none';
+  status() {
+    console.clear();
+    console.log("visor: " + this.visor);
+    console.log("conta: " + this.conta);
+    console.log("temp: " + this.temp);
   }
 }
